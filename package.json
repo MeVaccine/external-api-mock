@@ -1,0 +1,16 @@
+{
+  "name": "external-api-mock",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/MeVaccine/external-api-mock.git",
+  "author": "Sethanant Pipatpakorn <the_tkpark@hotmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "fastify": "^3.17.0",
+    "nodemon": "^2.0.7"
+  }
+}
