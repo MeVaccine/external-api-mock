@@ -5,25 +5,26 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-env:
-  NODE_VERSION: '14.x'
-  AZURE_WEBAPP_NAME: 'mevaccine-external-api'
-  AZURE_WEBAPP_PACKAGE_PATH: '.'
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: npm install
-        run: npm install
-      - name: 'Deploy to Azure WebApp'
-        uses: azure/webapps-deploy@v2
-        with: 
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+    - uses: actions/checkout@v2
+
+    - uses: azure/docker-login@v1
+      with:
+        login-server: mevaccine.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - run: |
+        docker build . -t mevaccine.azurecr.io/mevaccine-external-api:${{ github.sha }}
+        docker push mevaccine.azurecr.io/mevaccine-external-api:${{ github.sha }}
+
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'mevaccine-external-api'
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        images: 'mevaccine.azurecr.io/mevaccine-external-api:${{ github.sha }}'
