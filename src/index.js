@@ -34,13 +34,10 @@ fastify.get('/nationid', (req, res) => {
 	res.send(idInfo)
 })
 
-const start = async () => {
-	try {
-		console.info(`Running on port ${PORT}`)
-		await fastify.listen(PORT)
-	} catch (err) {
+fastify.listen(PORT, '0.0.0.0', function (err, address) {
+	if (err) {
 		fastify.log.error(err)
 		process.exit(1)
 	}
-}
-start()
+	fastify.log.info(`server listening on ${address}`)
+})
