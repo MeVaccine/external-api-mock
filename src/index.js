@@ -25,11 +25,14 @@ fastify.get('/', (request, reply) => {
 })
 
 fastify.get('/nationid', (req, res) => {
-	const { id } = req.query
+	const { id, laserID } = req.query
 	if (!idValidator(id)) {
 		return res.status(400).send({ error: 'id is not valid Thai national id' })
 	}
-	const idInfo = nationalID.find(el => el.id == id)
+	if (!/JT\d{10}/.test(laserID)) {
+		return res.status(400).send({ error: 'Laser ID is not valid' })
+	}
+	const idInfo = nationalID.find(el => el.id == id && el.laserID == laserID)
 	if (!idInfo) return res.status(404).send({ error: 'Not Found' })
 	res.send(idInfo)
 })
