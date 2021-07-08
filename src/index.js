@@ -1,5 +1,6 @@
 const nationalID = require('./data/nationalID.json')
 // const validThaiID = require('thai-id-validator')
+const path = require('path')
 const fastify = require('fastify')({
 	logger: true,
 })
@@ -20,9 +21,13 @@ function idValidator(id) {
 	return !1
 }
 
-fastify.get('/', (request, reply) => {
-	reply.send({ success: true, timestamp: new Date() })
+fastify.register(require('fastify-static'), {
+	root: path.resolve(__dirname, '..', 'public'),
 })
+
+// fastify.get('/', (request, reply) => {
+// 	reply.send({ success: true, timestamp: new Date() })
+// })
 
 fastify.get('/nationid', (req, res) => {
 	const { id, laserID } = req.query

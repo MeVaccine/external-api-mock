@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/App.css"],"names":[],"mappings":"AAAA,KACI,eAAgB,CAChB,gBAAiB,CACjB,eACJ","file":"main.e85c7fa3.chunk.css","sourcesContent":[".App {\r\n    margin-left: 10%;\r\n    margin-right: 10%;\r\n    margin-top: 40px;\r\n}"]}
